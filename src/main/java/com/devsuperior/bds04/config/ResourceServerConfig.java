@@ -25,7 +25,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	private JwtTokenStore tokenStore;
 
 	private static final String[] PUBLIC = { "/oauth/token", "/h2-console/**" };
-	private static final String[] PUBLIC_GET = { "/cities/**" };
+	private static final String[] PUBLIC_GET = { "/cities/**", "/events/**" };
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
