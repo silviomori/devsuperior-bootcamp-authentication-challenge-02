@@ -26,6 +26,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	private static final String[] PUBLIC = { "/oauth/token", "/h2-console/**" };
 	private static final String[] PUBLIC_GET = { "/cities/**", "/events/**" };
+	private static final String[] PROTECTED_POST = { "/events/**" };
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -38,12 +39,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		// H2-console uses frames, so it needs this configuration
 		if (Arrays.asList(environment.getActiveProfiles()).contains("test")) {
 			http.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN));
-
 		}
 
 		http.authorizeRequests()
 			.antMatchers(PUBLIC).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_GET).permitAll()
+			.antMatchers(HttpMethod.POST, PROTECTED_POST).hasAnyRole("CLIENT", "ADMIN")
 			.anyRequest().hasRole("ADMIN");
 	}
 
